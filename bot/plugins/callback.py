@@ -21,6 +21,19 @@ from bot.database import Database # pylint: disable=import-error
 
 db = Database()
 
+import logging
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+import urllib.request
+import json
+import imdb
+import os
+PORT = int(os.environ.get('PORT', 5000))
+api_key= 'c0c3fdda'
+ia = imdb.IMDb() 
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+
+
 
 @Client.on_callback_query(filters.regex(r"navigate\((.+)\)"), group=2)
 async def cb_navg(bot, update: CallbackQuery):
