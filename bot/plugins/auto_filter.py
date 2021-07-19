@@ -216,8 +216,27 @@ async def auto_filter(bot, update):
         try:
             await bot.send_message(
                 chat_id = update.chat.id,
-                text=f"Found {(len_results)} Results For Your Query: <code>{query}</code>",
-                reply_markup=reply_markup,
+                text=f"Found {(,
+                   search = ia.search_movie(query) 
+      
+    id='tt'+search[0].movieID
+    
+    url= 'http://www.omdbapi.com/?i='+id+'&apikey='+api_key
+    
+    x=urllib.request.urlopen(url)
+    
+    for line in x:
+        x=line.decode()
+    
+    data=json.loads(x)
+    
+    ans=''
+    ans+='*'+data['Title']+'* ('+data['Year']+')'+'\n\n'
+    ans+='*IMDb Rating*: '+data['imdbRating']+' \n'
+    ans+='*Cast*: '+data['Actors']+'\n'
+    ans+='*Genre*: '+data['Genre']+'\n\n'
+    ans+='*Plot*: '+data['Plot']+'\n'
+    ans+='[.]('+data['Poster']+')',
                 parse_mode="html",
                 reply_to_message_id=update.message_id
             )
