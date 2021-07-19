@@ -155,7 +155,26 @@ async def cb_navg(bot, update: CallbackQuery):
     
     reply_markup = InlineKeyboardMarkup(temp_results)
     
-    text=f"<i>Found</i> <code>{leng}</code> <i>Results For Your Query:</i> <code>{query}</code>"
+       search = ia.search_movie(query) 
+      
+    id='tt'+search[0].movieID
+    
+    url= 'http://www.omdbapi.com/?i='+id+'&apikey='+api_key
+    
+    x=urllib.request.urlopen(url)
+    
+    for line in x:
+        x=line.decode()
+    
+    data=json.loads(x)
+    
+    ans=''
+    ans+='*'+data['Title']+'* ('+data['Year']+')'+'\n\n'
+    ans+='*IMDb Rating*: '+data['imdbRating']+' \n'
+    ans+='*Cast*: '+data['Actors']+'\n'
+    ans+='*Genre*: '+data['Genre']+'\n\n'
+    ans+='*Plot*: '+data['Plot']+'\n'
+    ans+='[.]('+data['Poster']+')'
         
     try:
         await update.message.edit(
