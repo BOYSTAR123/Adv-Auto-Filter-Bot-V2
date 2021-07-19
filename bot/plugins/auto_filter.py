@@ -26,10 +26,9 @@ api_key= 'c0c3fdda'
 ia = imdb.IMDb() 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
-      query = {query} 
-    id='tt'+ia.search_movie(query)[0].movieID
+      
     
-    url= 'http://www.omdbapi.com/?i='+id+'&apikey='+api_key
+    url= 'http://www.omdbapi.com/?i='+'tt'+ia.search_movie(query)[0].movieID+'&apikey='+api_key
     
     x=urllib.request.urlopen(url)
     
