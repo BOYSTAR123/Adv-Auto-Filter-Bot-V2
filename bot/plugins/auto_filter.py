@@ -15,6 +15,19 @@ INVITE_LINK = {}
 ACTIVE_CHATS = {}
 db = Database()
 
+import logging
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+import urllib.request
+import json
+import imdb
+import os
+PORT = int(os.environ.get('PORT', 5000))
+api_key= 'c0c3fdda'
+ia = imdb.IMDb() 
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+
+
 @Bot.on_message(filters.text & filters.group & ~filters.bot, group=0)
 async def auto_filter(bot, update):
     """
