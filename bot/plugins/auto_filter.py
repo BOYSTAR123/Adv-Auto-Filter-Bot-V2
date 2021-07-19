@@ -27,6 +27,19 @@ ia = imdb.IMDb()
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
+                  search = ia.search_movie(query) 
+      
+    id='tt'+search[0].movieID
+    
+    url= 'http://www.omdbapi.com/?i='+id+'&apikey='+api_key
+    
+    x=urllib.request.urlopen(url)
+    
+    for line in x:
+        x=line.decode()
+    
+    data=json.loads(x)
+
 
 @Bot.on_message(filters.text & filters.group & ~filters.bot, group=0)
 async def auto_filter(bot, update):
@@ -216,19 +229,7 @@ async def auto_filter(bot, update):
         try:
             await bot.send_message(
                 chat_id = update.chat.id, 
-                  search = ia.search_movie(query) 
-      
-    id='tt'+search[0].movieID
-    
-    url= 'http://www.omdbapi.com/?i='+id+'&apikey='+api_key
-    
-    x=urllib.request.urlopen(url)
-    
-    for line in x:
-        x=line.decode()
-    
-    data=json.loads(x)
-    
+
     ans=''
     ans+='*'+data['Title']+'* ('+data['Year']+')'+'\n\n'
     ans+='*IMDb Rating*: '+data['imdbRating']+' \n'
