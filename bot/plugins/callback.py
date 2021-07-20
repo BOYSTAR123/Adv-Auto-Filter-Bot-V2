@@ -21,19 +21,6 @@ from bot.database import Database # pylint: disable=import-error
 
 db = Database()
 
-import logging
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-import urllib.request
-import json
-import imdb
-import os
-PORT = int(os.environ.get('PORT', 5000))
-api_key= 'c0c3fdda'
-ia = imdb.IMDb() 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
-
-
 
 @Client.on_callback_query(filters.regex(r"navigate\((.+)\)"), group=2)
 async def cb_navg(bot, update: CallbackQuery):
@@ -155,26 +142,7 @@ async def cb_navg(bot, update: CallbackQuery):
     
     reply_markup = InlineKeyboardMarkup(temp_results)
     
-       search = ia.search_movie(query) 
-      
-    id='tt'+search[0].movieID
-    
-    url= 'http://www.omdbapi.com/?i='+id+'&apikey='+api_key
-    
-    x=urllib.request.urlopen(url)
-    
-    for line in x:
-        x=line.decode()
-    
-    data=json.loads(x)
-    
-    ans=''
-    ans+='*'+data['Title']+'* ('+data['Year']+')'+'\n\n'
-    ans+='*IMDb Rating*: '+data['imdbRating']+' \n'
-    ans+='*Cast*: '+data['Actors']+'\n'
-    ans+='*Genre*: '+data['Genre']+'\n\n'
-    ans+='*Plot*: '+data['Plot']+'\n'
-    ans+='[.]('+data['Poster']+')'
+    text=f"<i>Found</i> <code>{leng}</code> <i>Results For Your Query:</i> <code>{query}</code>"
         
     try:
         await update.message.edit(
@@ -1739,4 +1707,3 @@ def time_formatter(seconds: float) -> str:
         ((str(minutes) + "m, ") if minutes else "") + \
         ((str(seconds) + "s") if seconds else "")
     return tmp
-
