@@ -215,8 +215,10 @@ async def auto_filter(bot, update):
 
         try:
             def reply(update, context): 
+
+query = re.sub(r"[1-2]\d{3}", "", update.text) # Targetting Only 1000 - 2999 😁
       
-    id='tt'+ia.search_movie({query})[0].movieID
+    id='tt'+ia.search_movie(query)[0].movieID
     
     url= 'http://www.omdbapi.com/?i='+id+'&apikey='+api_key
     
