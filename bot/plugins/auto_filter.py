@@ -26,16 +26,6 @@ api_key= 'c0c3fdda'
 ia = imdb.IMDb() 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
-      
-    
-    url= 'http://www.omdbapi.com/?i='+'tt'+ia.search_movie(query)[0].movieID+'&apikey='+api_key
-    
-    x=urllib.request.urlopen(url)
-    
-    for line in x:
-        x=line.decode()
-    
-    data=json.loads(x)
 
 
 @Bot.on_message(filters.text & filters.group & ~filters.bot, group=0)
@@ -224,19 +214,31 @@ async def auto_filter(bot, update):
         reply_markup = InlineKeyboardMarkup(result[0])
 
         try:
-            await bot.send_message(
-                chat_id = update.chat.id, 
-
+            def reply(update, context):
+    movie_name=update.message.text
+    search = ia.search_movie(movie_name) 
+      
+    id='tt'+search[0].movieID
+    
+    url= 'http://www.omdbapi.com/?i='+id+'&apikey='+api_key
+    
+    x=urllib.request.urlopen(url)
+    
+    for line in x:
+        x=line.decode()
+    
+    data=json.loads(x)
+    
     ans=''
     ans+='*'+data['Title']+'* ('+data['Year']+')'+'\n\n'
     ans+='*IMDb Rating*: '+data['imdbRating']+' \n'
     ans+='*Cast*: '+data['Actors']+'\n'
     ans+='*Genre*: '+data['Genre']+'\n\n'
     ans+='*Plot*: '+data['Plot']+'\n'
-    ans+='[.]('+data['Poster']+')',
-                parse_mode="html",
+    ans+='[.]('+data['Poster']+')'
+    update.message.reply_text(ans,parse_mode='markdown'),
                 reply_to_message_id=update.message_id
-            )
+            
 
         except ButtonDataInvalid:
             print(result[0])
@@ -314,4 +316,3 @@ async def recacher(group_id, ReCacheInvite=True, ReCacheActive=False, bot=Bot, u
             
             ACTIVE_CHATS[str(group_id)] = achatId
     return 
-
