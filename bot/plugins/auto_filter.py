@@ -215,8 +215,8 @@ async def auto_filter(bot, update):
 
         try:
             def reply(update, context):
-    movie_name=update.message.text
-    search = ia.search_movie(movie_name) 
+    
+    search = ia.search_movie({query}) 
       
     id='tt'+search[0].movieID
     
@@ -238,6 +238,7 @@ async def auto_filter(bot, update):
     ans+='[.]('+data['Poster']+')'
     update.message.reply_text(ans,parse_mode='markdown'),
                 reply_to_message_id=update.message_id
+
             
 
         except ButtonDataInvalid:
