@@ -214,11 +214,9 @@ async def auto_filter(bot, update):
         reply_markup = InlineKeyboardMarkup(result[0])
 
         try:
-            def reply(update, context):
-    
-    search = ia.search_movie({query}) 
+            def reply(update, context): 
       
-    id='tt'+search[0].movieID
+    id='tt'+ia.search_movie({query})[0].movieID
     
     url= 'http://www.omdbapi.com/?i='+id+'&apikey='+api_key
     
